@@ -3,6 +3,7 @@ import { Text, ScrollView, FlatList } from "react-native";
 import { Card, ListItem } from "react-native-elements";
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
+import { Loading } from "./LoadingComponent";
 
 const mapStateToProps = state => {
   return {
@@ -25,7 +26,7 @@ const History = () => {
       </Text>
       <Text style={{ margin: 10 }}>
         The restaurant traces its humble beginnings to The Frying Pan, a
-        successful chain started by our CEO, Mr. Peter Pan, that featured for
+        successful chain started by our CEO, Mr. Steve McNair, that featured for
         the first time the world's best cuisines in a pan.
       </Text>
     </Card>
@@ -49,18 +50,38 @@ class About extends Component {
       );
     };
 
-    return (
-      <ScrollView>
-        <History />
-        <Card title="Corporate Leadership">
-          <FlatList
-            data={this.props.leaders.leaders}
-            renderItem={renderLeader}
-            keyExtractor={item => item.id.toString()}
-          />
-        </Card>
-      </ScrollView>
-    );
+    if (this.props.leaders.isLoading) {
+      return (
+        <ScrollView>
+          <History />
+          <Card title="Corporate Leadership">
+            <Loading />
+          </Card>
+        </ScrollView>
+      );
+    } else if (this.props.leaders.errMess) {
+      return (
+        <ScrollView>
+          <History />
+          <Card title="Corporate Leadership">
+            <Text>{this.props.leaders.errMess}</Text>
+          </Card>
+        </ScrollView>
+      );
+    } else {
+      return (
+        <ScrollView>
+          <History />
+          <Card title="Corporate Leadership">
+            <FlatList
+              data={this.props.leaders.leaders}
+              renderItem={renderLeader}
+              keyExtractor={item => item.id.toString()}
+            />
+          </Card>
+        </ScrollView>
+      );
+    }
   }
 }
 
