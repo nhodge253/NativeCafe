@@ -9,9 +9,7 @@ export const fetchComments = () => dispatch => {
         if (response.ok) {
           return response;
         } else {
-          var error = new Error(
-            "Error " + response.status + ": " + response.statusText
-          );
+          var error = new Error("Error " + response.status + ": " + response.statusText);
           error.response = response;
           throw error;
         }
@@ -45,9 +43,7 @@ export const fetchDishes = () => dispatch => {
         if (response.ok) {
           return response;
         } else {
-          var error = new Error(
-            "Error " + response.status + ": " + response.statusText
-          );
+          var error = new Error("Error " + response.status + ": " + response.statusText);
           error.response = response;
           throw error;
         }
@@ -85,9 +81,7 @@ export const fetchPromos = () => dispatch => {
         if (response.ok) {
           return response;
         } else {
-          var error = new Error(
-            "Error " + response.status + ": " + response.statusText
-          );
+          var error = new Error("Error " + response.status + ": " + response.statusText);
           error.response = response;
           throw error;
         }
@@ -125,9 +119,7 @@ export const fetchLeaders = () => dispatch => {
         if (response.ok) {
           return response;
         } else {
-          var error = new Error(
-            "Error " + response.status + ": " + response.statusText
-          );
+          var error = new Error("Error " + response.status + ": " + response.statusText);
           error.response = response;
           throw error;
         }
@@ -154,4 +146,15 @@ export const leadersFailed = errmess => ({
 export const addLeaders = leaders => ({
   type: ActionTypes.ADD_LEADERS,
   payload: leaders
+});
+
+export const postFavorite = dishId => dispatch => {
+  setTimeout(() => {
+    dispatch(addFavorite(dishId));
+  }, 1000);
+};
+
+export const addFavorite = dishId => ({
+  type: ActionTypes.ADD_FAVORITE,
+  payload: dishId
 });
