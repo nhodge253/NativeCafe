@@ -28,7 +28,13 @@ function RenderItem(props) {
   } else {
     if (item != null) {
       return (
-        <Card featuredTitle={item.name} featuredSubtitle={item.designation} image={{ uri: baseUrl + item.image }}>
+        <Card
+          featuredTitle={item.name}
+          featuredSubtitle={item.designation}
+          image={{
+            uri: baseUrl + item.image
+          }}
+        >
           <Text style={{ margin: 10 }}>{item.description}</Text>
         </Card>
       );
