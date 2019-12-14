@@ -171,7 +171,7 @@ export const postComment = (dishId, rating, author, comment) => dispatch => {
     dishId: dishId
   };
 
-  newComment.date = new Date().toISOString();
+  newComment.date = new Date().toLocaleString();
 
   setTimeout(() => {
     dispatch(addComment(newComment));
