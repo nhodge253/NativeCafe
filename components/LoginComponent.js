@@ -128,6 +128,24 @@ class RegisterTab extends Component {
     }
   };
 
+  getImageFromGallery = async () => {
+    const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+    const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+    if (cameraPermission.status === "granted" && cameraRollPermission.status === "granted") {
+      let capturedImage = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1
+      });
+      if (!capturedImage.cancelled) {
+        console.log(capturedImage);
+        this.processImage(capturedImage.uri);
+      }
+    }
+  };
+
   processImage = async imageUri => {
     let processedImage = await ImageManipulator.manipulateAsync(imageUri, [{ resize: { width: 400 } }], {
       format: "png"
@@ -156,13 +174,21 @@ class RegisterTab extends Component {
     return (
       <ScrollView>
         <View style={styles.container}>
-          <View style={styles.imageContainer}>
+          <View style={styles.buttonRow}>
             <Image
               source={{ uri: this.state.imageUrl }}
               loadingIndicatorSource={require("./images/logo.png")}
               style={styles.image}
             />
             <Button title="Camera" onPress={this.getImageFromCamera} />
+          </View>
+          <View style={styles.buttonRow}>
+            <Image
+              source={{ uri: this.state.imageUrl }}
+              loadingIndicatorSource={require("./images/logo.png")}
+              style={styles.image}
+            />
+            <Button title="Gallery" onPress={this.getImageFromGallery} />
           </View>
           <Input
             placeholder="Username"
@@ -235,7 +261,8 @@ const styles = StyleSheet.create({
   image: {
     margin: 10,
     width: 80,
-    height: 60
+    height: 60,
+    flexDirection: "row"
   },
   formInput: {
     margin: 20
@@ -246,6 +273,14 @@ const styles = StyleSheet.create({
   },
   formButton: {
     margin: 60
+  },
+
+  buttonRow: {
+    alignItems: "center",
+    // justifyContent: "center",
+    flex: 1,
+    flexDirection: "row",
+    margin: 5
   }
 });
 

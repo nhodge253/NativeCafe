@@ -4,6 +4,7 @@ import { Card } from "react-native-elements";
 import DatePicker from "react-native-datepicker";
 import * as Animatable from "react-native-animatable";
 import * as Permissions from "expo-permissions";
+import * as Calendar from "expo-calendar";
 import { Notifications } from "expo";
 
 class Reservation extends Component {
@@ -46,7 +47,8 @@ class Reservation extends Component {
           text: "OK",
           onPress: () => {
             this.presentLocalNotification(this.state.date);
-            console.log("confirmed");
+            this.addReservationToCalendar(this.state.date);
+            console.log(this.state.date);
             this.resetForm();
           }
         }
@@ -64,6 +66,28 @@ class Reservation extends Component {
     });
   }
 
+  async addReservationToCalendar(date) {
+    await this.obtainCalendarPermission();
+    Calendar.createEventAsync(null, {
+      title: "Con Fusion Table Reservation",
+      startDate: new Date(Date.parse(date)),
+      endDate: new Date(Date.parse(date) + 2 * 60 * 60 * 1000),
+      location: "121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong",
+      timeZone: "Asia/Hong_Kong"
+    });
+    console.log("Event created");
+  }
+
+  async obtainCalendarPermission() {
+    let permission = await Permissions.getAsync(Permissions.CALENDAR);
+    if (permission.status !== "granted") {
+      permission = await Permissions.askAsync(Permissions.CALENDAR);
+      if (permission.status !== "granted") {
+        Alert.alert("Permission not granted to use calendar.");
+      }
+    }
+    return permission;
+  }
   async obtainNotificationPermission() {
     let permission = await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS);
     if (permission.status !== "granted") {

@@ -34,6 +34,9 @@ function RenderItem(props) {
           image={{
             uri: baseUrl + item.image
           }}
+          imageStyle={{
+            height: 300
+          }}
         >
           <Text style={{ margin: 10 }}>{item.description}</Text>
         </Card>
@@ -61,7 +64,7 @@ class Home extends Component {
     this.animatedValue.setValue(0);
     Animated.timing(this.animatedValue, {
       toValue: 8,
-      duration: 8000,
+      duration: 12000,
       easing: Easing.linear
     }).start(() => this.animate());
   }
